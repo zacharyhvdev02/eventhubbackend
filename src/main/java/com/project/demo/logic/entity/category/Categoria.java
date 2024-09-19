@@ -1,21 +1,23 @@
-package com.project.demo.logic.entity.product;
+package com.project.demo.logic.entity.category;
 
-import com.project.demo.logic.entity.category.Categoria;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-public class Producto {
+public class Categoria {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String name;
-    public String description;
+    private Long id;
 
-    public int price;
-    public int stock;
+    private String name;
+
+    private String description;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -24,10 +26,6 @@ public class Producto {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    @OneToMany
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
-    public Categoria category;
 
     public Long getId() {
         return id;
@@ -53,22 +51,6 @@ public class Producto {
         this.description = description;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -83,13 +65,5 @@ public class Producto {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Categoria getCategory() {
-        return category;
-    }
-
-    public void setCategory(Categoria category) {
-        this.category = category;
     }
 }
