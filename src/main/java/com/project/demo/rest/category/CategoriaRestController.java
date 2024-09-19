@@ -1,13 +1,11 @@
-package com.project.demo.rest.Category;
+package com.project.demo.rest.category;
 
 import com.project.demo.logic.entity.category.Categoria;
 import com.project.demo.logic.entity.category.CategoriaRepository;
-import com.project.demo.logic.entity.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
-public class CategoryRestController {
+public class CategoriaRestController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -27,19 +25,19 @@ public class CategoryRestController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public Categoria addCategory(@RequestBody Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public Categoria getCategoriesById(@PathVariable Long id) {
         return categoriaRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<Categoria> updateCategory(@PathVariable Long id, @RequestBody Categoria categoryDetails) {
         Optional<Categoria> categoryOptional = categoriaRepository.findById(id);
 
@@ -56,7 +54,7 @@ public class CategoryRestController {
 
     // Delete a category
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         if (categoriaRepository.existsById(id)) {
             categoriaRepository.deleteById(id);

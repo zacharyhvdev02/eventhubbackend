@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
+@Table(name = "product")
+@Entity
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +27,7 @@ public class Producto {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     public Categoria category;
 
