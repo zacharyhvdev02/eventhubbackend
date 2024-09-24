@@ -46,7 +46,7 @@ public class ProductoRestController {
 
     // Get a product by ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
     public Producto getProductoById(@PathVariable Long id) {
         return productoRepository.findById(id).orElseThrow(RuntimeException::new);
     }
@@ -81,6 +81,7 @@ public class ProductoRestController {
             productoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
+            System.out.println("Not found wey");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

@@ -31,7 +31,7 @@ public class CategoriaRestController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
     public Categoria getCategoriesById(@PathVariable Long id) {
         return categoriaRepository.findById(id).orElseThrow(RuntimeException::new);
     }
