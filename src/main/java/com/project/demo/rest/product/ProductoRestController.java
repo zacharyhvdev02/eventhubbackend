@@ -81,7 +81,6 @@ public class ProductoRestController {
             productoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
-            System.out.println("Not found wey");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
