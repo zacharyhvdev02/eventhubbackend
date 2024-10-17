@@ -75,7 +75,7 @@ public class ProductoRestController {
 
     // Delete a product
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER-ADMIN-ROLE')")
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         if (productoRepository.existsById(id)) {
             productoRepository.deleteById(id);
