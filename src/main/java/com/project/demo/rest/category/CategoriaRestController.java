@@ -2,7 +2,14 @@ package com.project.demo.rest.category;
 
 import com.project.demo.logic.entity.category.Categoria;
 import com.project.demo.logic.entity.category.CategoriaRepository;
+import com.project.demo.logic.http.GlobalResponseHandler;
+import com.project.demo.logic.http.Meta;
+import jakarta.servlet.http.HttpServletRequest;
+import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +27,27 @@ public class CategoriaRestController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')")
-    public List<Categoria> getAllCategories() {
-        return categoriaRepository.findAll();
+    public ResponseEntity<?> getAllCategories(
+            @RequestParam(defaultValue = "0") int page, // Número de página, por defecto 0
+            @RequestParam(defaultValue = "10") int size, // Tamaño de página, por defecto 10
+            HttpServletRequest request) {
+        Pageable pageable = PageRequest.of(page-1, size);
+        Page<Categoria> categoryPage = categoriaRepository.findAll(pageable);
+
+        Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+        meta.setTotalPages(categoryPage.getTotalPages());
+        meta.setTotalElements(categoryPage.getTotalElements());
+        meta.setPageNumber(categoryPage.getNumber());
+        meta.setPageSize(categoryPage.getSize());
+
+        return new GlobalResponseHandler().handleResponse(
+                "Categories retrieved successfully",
+                categoryPage.getContent(), // El contenido de la página
+                HttpStatus.OK,
+                meta
+        );
     }
+
 
     @PostMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")

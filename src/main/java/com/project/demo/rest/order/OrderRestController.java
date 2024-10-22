@@ -45,7 +45,6 @@ public class OrderRestController {
         if (foundUser.isPresent()) {
             Pageable pageable = PageRequest.of(page-1, size);
             Page<Order> ordersPage = orderRepository.getOrderByUserId(userId, pageable);
-            System.out.println(ordersPage.getContent());
 
             Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
             meta.setTotalPages(ordersPage.getTotalPages());
